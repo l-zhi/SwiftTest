@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>swift js native</title>
+	<style>
+		body{
+			text-align: center;
+			background-color: #eee;
+		}
+		#invocationNative{
+			display: inline-block;
+			width: 200px;
+			height: 50px;
+			background-color: #c66;
+			border-radius: 10px;
+			line-height: 50px;
+			text-align: center;
+			color: #fff;
+			
+		}
+		#invocationNative:active{
+			background-color: #b66;
+			color: #eee;
+		}
+		#content{
+			margin-top: 20px;
+			font-size: 20px;
+		}
+	</style>
+<body>
+	<a id="invocationNative" href="javascript:;">调用IOS</a>
+	<div id="content"></div>
+	<script>
+	// native 调用的方法
+	var num = 1;
+	window.massegeToWebView = function(){
+		document.getElementById("content").innerHTML = '调用webview，第' + num + '次';
+		num++;
+	}
+	
+	// web 调用 native 方法
+	function massageToIOS(jsonStr){
+		var iFrame;
+		iFrame = document.createElement("iframe");
+		iFrame.setAttribute("src", "ios://" + jsonStr);
+		iFrame.setAttribute("style", "display:none;");
+		document.body.appendChild(iFrame);
+		//发起请求后这个iFrame就没用了，所以把它从dom上移除掉
+		iFrame.parentNode.removeChild(iFrame);
+		iFrame = null;
+	}
+
+	document.getElementById('invocationNative').addEventListener("click", function(){
+		massageToIOS('helloIOS');
+	})
+
+	</script>
+</body>
+</html>
